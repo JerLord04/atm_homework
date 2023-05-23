@@ -27,4 +27,5 @@ public class Detail_Info {
         this.password = password;
         this.wallet_money = wallet_money;
     }
+
 }

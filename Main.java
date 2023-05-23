@@ -74,9 +74,6 @@ class Main {
                 TimeUnit.SECONDS.sleep(3);
                 flg = false;
             }
-            // System.out.println(status_login);
-            // TimeUnit.SECONDS.sleep(3);
-            // flg = false;
         }
     }
 
@@ -118,7 +115,7 @@ class Main {
             System.out.println("2.No");
             System.out.print("Enter : ");
             int awn = sc.nextInt();
-            if(awn == 1){
+            if (awn == 1) {
                 ac.Withdraw(money_withdraw);
                 status = true;
             }
@@ -170,24 +167,30 @@ class Main {
                         TimeUnit.SECONDS.sleep(3);
                     }
                 } else if (choice == 3) {
+                    tranfer();
+                    TimeUnit.SECONDS.sleep(3);
 
                 } else if (choice == 4) {
-
-                } else if(choice == 5){
+                    remove();
+                    flg = false;
+                    userKey = null;
+                    System.out.println("Wait...");
+                    TimeUnit.SECONDS.sleep(3);
+                } else if (choice == 5) {
                     account_info();
                     TimeUnit.SECONDS.sleep(10);
-                } else{
+                } else {
                     System.out.println("Are you sure ?  : ");
                     System.out.println("1.Yes");
                     System.out.println("2.No");
                     System.out.print("Enter : ");
                     int awn = sc.nextInt();
-                    if(awn == 1){
+                    if (awn == 1) {
                         flg = false;
                         userKey = null;
                         System.out.println("Logging out...");
                         TimeUnit.SECONDS.sleep(3);
-                    }else{
+                    } else {
                         System.out.println("Cancel...");
                         TimeUnit.SECONDS.sleep(3);
                         flg = true;
@@ -200,7 +203,61 @@ class Main {
 
     }
 
-    public static void account_info(){
+    public static void remove() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Are you sure to deleted this account ?  : ");
+        System.out.println("1.Yes");
+        System.out.println("2.No");
+        System.out.print("Enter : ");
+        int awn = sc.nextInt();
+        if (awn == 1) {
+            boolean status = ac.remove_account();
+            if (status) {
+                System.out.println("Account deletion completed");
+            } else {
+                System.out.println("Account deletion error");
+            }
+        } else {
+            System.out.println("Cancelled");
+        }
+    }
+
+    public static void tranfer() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("---Tranfer Money---");
+        System.out.print("Account : ");
+        String username = sc.nextLine();
+        if (ac.check_dupicated_user(username)) {
+            System.out.print("How many baht would you like to transfer? : ");
+            float money_tranfer = sc.nextFloat();
+            System.out.println("Are you sure ?  : ");
+            System.out.println("1.Yes");
+            System.out.println("2.No");
+            System.out.print("Enter : ");
+            int awn = sc.nextInt();
+            if (awn == 1) {
+                // boolean status = ac.tranfer_money(money_tranfer, username);
+                if (ac.check_balance(money_tranfer)) {
+                    if (ac.tranfer_money(money_tranfer, username)) {
+                        ac.Withdraw(money_tranfer);
+                        System.out.println("Transfer Completed");
+                        ac.printBill();
+                    } else {
+                        System.out.println("The transfer could not be made because the account could not be found.");
+                    }
+                    // ac.Withdraw(money_tranfer);
+                } else {
+                    System.out.println("Transfer error. You don't have enough money.");
+
+                }
+            }
+        } else {
+            System.out.println("The deposit function is recommended.");
+        }
+
+    }
+
+    public static void account_info() {
         System.out.println("---Account Information---");
         ac.show_all();
     }
